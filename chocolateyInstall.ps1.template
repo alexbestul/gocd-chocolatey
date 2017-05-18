@@ -3,7 +3,12 @@ $packageArgs = @{
   fileType      = 'exe'
 
   url           = '{{url}}'
+  checksum      = '{{checksum}}'
+  checksumType  = 'sha256'
+
   url64         = '{{url64}}'
+  checksum64    = '{{checksum64}}'
+  checksumType64= 'sha256'
 
   silentArgs    = '/S'
 

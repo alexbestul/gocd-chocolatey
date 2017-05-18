@@ -4,13 +4,27 @@ param(
     [string][parameter()][ValidateNotNullOrEmpty()]$revision = $env:revision
 )
 
+function Get-ChecksumForFile($url) {
+    $tempFile = [System.IO.Path]::GetTempFileName()
+    Invoke-WebRequest -Uri $url -OutFile $tempFile
+    $hash = Get-FileHash -Path $tempFile -Algorithm "sha256"
+    Remove-Item $tempFile
+
+    return $hash.Hash
+}
+
 $path = "gocd-" + $app
 $fullVersion = $version + "-" + $revision
 
+$url = "https://download.gocd.io/binaries/$fullVersion/win/go-$app-$fullVersion-jre-32bit-setup.exe"
+$url64 = "https://download.gocd.io/binaries/$fullVersion/win/go-$app-$fullVersion-jre-64bit-setup.exe"
+
 $replacements = @{
     '{{app}}' = $app
-    '{{url}}' = "https://download.gocd.io/binaries/$fullVersion/win/go-$app-$fullVersion-jre-32bit-setup.exe"
-    '{{url64}}' = "https://download.gocd.io/binaries/$fullVersion/win/go-$app-$fullVersion-jre-64bit-setup.exe"
+    '{{url}}' = $url
+    '{{checksum}}' = Get-ChecksumForFile $url
+    '{{url64}}' = $url64
+    '{{checksum64}}' = Get-ChecksumForFile $url64
 }
 
 Push-Location $path
