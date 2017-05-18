@@ -6,7 +6,10 @@ param(
 
 $path = "gocd-" + $app
 $fullVersion = $version + "-" + $revision
-cd $path
+
+Push-Location $path
+
 (Get-Content tools\chocolateyInstall.ps1.template) -replace '{{fullVersion}}', $fullVersion | out-file tools\chocolateyInstall.ps1;
 choco pack --version=$version
-cd ..
+
+Pop-Location
