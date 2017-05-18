@@ -7,9 +7,21 @@ param(
 $path = "gocd-" + $app
 $fullVersion = $version + "-" + $revision
 
+$replacements = @{
+    '{{url}}' = "https://download.gocd.io/binaries/$fullVersion/win/go-$app-$fullVersion-jre-32bit-setup.exe"
+    '{{url64}}' = "https://download.gocd.io/binaries/$fullVersion/win/go-$app-$fullVersion-jre-64bit-setup.exe"
+}
+
 Push-Location $path
 
-(Get-Content tools\chocolateyInstall.ps1.template) -replace '{{fullVersion}}', $fullVersion | out-file tools\chocolateyInstall.ps1;
+$script = Get-Content tools\chocolateyInstall.ps1.template
+
+foreach ($token in $replacements.Keys) {
+    $script = $script -replace $token, $replacements.Item($token)
+}
+
+$script | out-file tools\chocolateyInstall.ps1;
+
 choco pack --version=$version
 
 Pop-Location

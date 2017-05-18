@@ -2,8 +2,8 @@ $packageArgs = @{
   packageName   = 'gocdagent'
   fileType      = 'exe'
 
-  url           = 'https://download.gocd.io/binaries/{{fullVersion}}/win/go-agent-{{fullVersion}}-jre-32bit-setup.exe'
-  url64         = 'https://download.gocd.io/binaries/{{fullVersion}}/win/go-agent-{{fullVersion}}-jre-64bit-setup.exe'
+  url           = '{{url}}'
+  url64         = '{{url64}}'
 
   silentArgs    = '/S'
 
