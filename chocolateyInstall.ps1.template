@@ -1,5 +1,5 @@
 $packageArgs = @{
-  packageName   = 'gocdagent'
+  packageName   = 'gocd{{app}}'
   fileType      = 'exe'
 
   url           = '{{url}}'

@@ -8,13 +8,15 @@ $path = "gocd-" + $app
 $fullVersion = $version + "-" + $revision
 
 $replacements = @{
+    '{{app}}' = $app
     '{{url}}' = "https://download.gocd.io/binaries/$fullVersion/win/go-$app-$fullVersion-jre-32bit-setup.exe"
     '{{url64}}' = "https://download.gocd.io/binaries/$fullVersion/win/go-$app-$fullVersion-jre-64bit-setup.exe"
 }
 
 Push-Location $path
+mkdir -Force "tools" | Out-Null
 
-$script = Get-Content tools\chocolateyInstall.ps1.template
+$script = Get-Content "$PSScriptRoot\chocolateyInstall.ps1.template"
 
 foreach ($token in $replacements.Keys) {
     $script = $script -replace $token, $replacements.Item($token)
